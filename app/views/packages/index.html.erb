@@ -1,8 +1,9 @@
 <div>
   <div>
     <h1>
-      List of all packages
+      Delivery Tracker
     </h1>
+    <p>Know if something gets lost in the mail.</p>
   </div>
 </div>
 
@@ -11,7 +12,7 @@
 <div>
   <div>
     <h2>
-      Add a new package
+      Expecting a package?
     </h2>
 
     <form action="/insert_package" method="post">
@@ -25,7 +26,7 @@
 
       <div>
         <label for="delivery_date_box">
-          Delivery date
+          Supposed to arrive on 
         </label>
 
         <input type="date" id="delivery_date_box" name="query_delivery_date">
@@ -39,126 +40,39 @@
         <textarea id="details_box" name="query_details" rows="3"></textarea>
       </div>
 
-      <div>
-        <input type="checkbox" id="delivery_status_box" name="query_delivery_status" value="1">
-
-        <label for="delivery_status_box">Delivery status</label>
-      </div>
-
-      <div>
-        <label for="created_on_box">
-          Created on
-        </label>
-
-        <input type="datetime-local" id="created_on_box" name="query_created_on">
-      </div>
-
-      <div>
-        <label for="updated_on_box">
-          Updated on
-        </label>
-
-        <input type="datetime-local" id="updated_on_box" name="query_updated_on">
-      </div>
-
       <button>
-        Create package
+        Log delivery
       </button>
     </form>
   </div>
 </div>
 
 <hr>
-<div>
-  <div>
-    <table border="1">
-      <tr>
-        <th>
-          ID
-        </th>
-
-        <th>
-          Description
-        </th>
-
-        <th>
-          Delivery date
-        </th>
-
-        <th>
-          Details
-        </th>
-
-        <th>
-          Delivery status
-        </th>
-
-        <th>
-          Created on
-        </th>
-
-        <th>
-          Updated on
-        </th>
-
-        <th>
-          Created at
-        </th>
-
-        <th>
-          Updated at
-        </th>
-
-        <th>
-        </th>
-      </tr>
-
-      <% @list_of_packages.each do |a_package| %>
-      <tr>
-        <td>
-          <%= a_package.id %>
-        </td>
-
-        <td>
-          <%= a_package.description %>
-        </td>
-
-        <td>
-          <%= a_package.delivery_date %>
-        </td>
-
-        <td>
-          <%= a_package.details %>
-        </td>
-
-        <td>
-          <%= a_package.delivery_status %>
-        </td>
-
-        <td>
-          <%= a_package.created_on %>
-        </td>
-
-        <td>
-          <%= a_package.updated_on %>
-        </td>
-
-        <td>
-          <%= time_ago_in_words(a_package.created_at) %> ago
-        </td>
-        <td>
-          <%= time_ago_in_words(a_package.updated_at) %> ago
-        </td>
-
-        <td>
-          <a href="/packages/<%= a_package.id %>">
-            Show details
-          </a>
-        </td>
-      </tr>
+  <div class="waiting_on">
+    <h2>Waiting on</h2>
+    <ul>
+      <% @list_of_packages.undelivered_packages.each do |a_package| %>
+        <% if a_package.user_id == current_user.id %>
+          <li>
+            <p><%= a_package.description %></p>
+            <p>Supposed to arrive on <%= a_package.delivery_date %></p>
+            <p><%= a_package.details %></p>
+          </li>
+        <% end %>
       <% end %>
-    </table>
+    </ul>
   </div>
-</div>
-
 <hr>
+  <div class="received">
+    <h2>Received</h2>
+    <ul>
+      <% @list_of_packages.delivered_packages.each do |a_package| %>
+        <% if a_package.user_id == current_user.id %>
+          <li>
+            <p><%= a_package.description %></p>
+            <p>Updated about <%= Time.current - a_package.updated_at %> ago. </p>
+          </li>
+        <% end %>
+      <% end %>
+    </ul>
+  </div>
