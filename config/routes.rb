@@ -9,8 +9,6 @@ Rails.application.routes.draw do
   # READ
   get("/packages", { :controller => "packages", :action => "index" })
   
-  get("/packages/:path_id", { :controller => "packages", :action => "show" })
-  
   # UPDATE
   
   post("/modify_package/:path_id", { :controller => "packages", :action => "update" })

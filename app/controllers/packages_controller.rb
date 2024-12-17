@@ -7,16 +7,6 @@ class PackagesController < ApplicationController
     render({ :template => "packages/index" })
   end
 
-  def show
-    the_id = params.fetch("path_id")
-
-    matching_packages = Package.where({ :id => the_id })
-
-    @the_package = matching_packages.at(0)
-
-    render({ :template => "packages/show" })
-  end
-
   def create
     the_package = Package.new
     the_package.description = params.fetch("query_description")
@@ -38,12 +28,8 @@ class PackagesController < ApplicationController
     the_package = Package.where({ :id => the_id }).at(0)
     the_package.delivery_status = true
 
-    if the_package.valid?
-      the_package.save
-      redirect_to("packages/index", { :notice => "Marked as received."} )
-    else
-      redirect_to("packages/index", { :alert => the_package.errors.full_messages.to_sentence })
-    end
+    the_package.save
+    redirect_to("/packages", { :notice => "Marked as received."} )
   end
 
   def destroy
@@ -52,6 +38,6 @@ class PackagesController < ApplicationController
 
     the_package.destroy
 
-    redirect_to("/packages/index", { :notice => "Deleted."} )
+    redirect_to("/packages", { :notice => "Deleted."} )
   end
 end
