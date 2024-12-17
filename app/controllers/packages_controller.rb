@@ -1,7 +1,8 @@
 class PackagesController < ApplicationController
   def index
-    @undelivered_packages = Package.undelivered_packages.where(:user_id => current_user.id)
-    @delivered_packages = Package.delivered_packages.where(:user_id => current_user.id)
+    signed_in_user = User.where(id => current_user.id).at(0)
+    @undelivered_packages = signed_in_user.undelivered
+    @delivered_packages = signed_in_user.delivered
 
     render({ :template => "packages/index" })
   end
