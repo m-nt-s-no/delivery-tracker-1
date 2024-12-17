@@ -15,14 +15,6 @@
 #
 class Package < ApplicationRecord
   belongs_to(:user)
-
-  def undelivered_packages
-    undelivered = Package.where(:delivery_status => false).order(:delivery_date)
-    return undelivered
-  end
-
-  def delivered_packages
-    delivered = Package.where(:delivery_status => true).order(:delivery_date)
-    return delivered
-  end
+  scope :undelivered, -> { where(:delivery_status => false).order(:delivery_date) }
+  scope :delivered, -> { where(:delivery_status => true).order(:delivery_date) }
 end

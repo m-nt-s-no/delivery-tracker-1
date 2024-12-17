@@ -51,14 +51,12 @@
   <div class="waiting_on">
     <h2>Waiting on</h2>
     <ul>
-      <% @list_of_packages.undelivered_packages.each do |a_package| %>
-        <% if a_package.user_id == current_user.id %>
-          <li>
-            <p><%= a_package.description %></p>
-            <p>Supposed to arrive on <%= a_package.delivery_date %></p>
-            <p><%= a_package.details %></p>
-          </li>
-        <% end %>
+      <% @undelivered_packages.each do |a_package| %>
+        <li>
+          <p><%= a_package.description %></p>
+          <p>Supposed to arrive on <%= a_package.delivery_date %></p>
+          <p><%= a_package.details %></p>
+        </li>
       <% end %>
     </ul>
   </div>
@@ -66,13 +64,11 @@
   <div class="received">
     <h2>Received</h2>
     <ul>
-      <% @list_of_packages.delivered_packages.each do |a_package| %>
-        <% if a_package.user_id == current_user.id %>
-          <li>
-            <p><%= a_package.description %></p>
-            <p>Updated about <%= Time.current - a_package.updated_at %> ago. </p>
-          </li>
-        <% end %>
+      <% @delivered_packages.each do |a_package| %>
+        <li>
+          <p><%= a_package.description %></p>
+          <p>Updated about <%= Time.current - a_package.updated_at %> ago. </p>
+        </li>
       <% end %>
     </ul>
   </div>

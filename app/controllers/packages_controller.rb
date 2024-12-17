@@ -1,8 +1,7 @@
 class PackagesController < ApplicationController
   def index
-    matching_packages = Package.all
-
-    @list_of_packages = matching_packages.order({ :created_at => :desc })
+    @undelivered_packages = Package.undelivered_packages.where(:user_id => current_user.id)
+    @delivered_packages = Package.delivered_packages.where(:user_id => current_user.id)
 
     render({ :template => "packages/index" })
   end

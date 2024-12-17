@@ -22,4 +22,6 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
   has_many(:packages)
+  has_many(:undelivered, -> { undelivered }, class_name: "Package")
+  has_many(:delivered, -> { delivered }, class_name: "Package")
 end
