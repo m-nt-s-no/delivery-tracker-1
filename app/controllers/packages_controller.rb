@@ -1,6 +1,6 @@
 class PackagesController < ApplicationController
   def index
-    signed_in_user = User.where(id => current_user.id).at(0)
+    signed_in_user = User.where(:id => current_user.id).at(0)
     @undelivered_packages = signed_in_user.undelivered
     @delivered_packages = signed_in_user.delivered
 
@@ -22,9 +22,8 @@ class PackagesController < ApplicationController
     the_package.description = params.fetch("query_description")
     the_package.delivery_date = params.fetch("query_delivery_date")
     the_package.details = params.fetch("query_details")
-    the_package.delivery_status = params.fetch("query_delivery_status", false)
-    the_package.created_on = params.fetch("query_created_on")
-    the_package.updated_on = params.fetch("query_updated_on")
+    the_package.delivery_status = false
+    the_package.user_id = current_user.id
 
     if the_package.valid?
       the_package.save

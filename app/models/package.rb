@@ -14,6 +14,8 @@
 #  user_id         :integer
 #
 class Package < ApplicationRecord
+  validates(:delivery_date, presence: true)
+  validates(:description, presence: true)
   belongs_to(:user)
   scope :undelivered, -> { where(:delivery_status => false).order(:delivery_date) }
   scope :delivered, -> { where(:delivery_status => true).order(:delivery_date) }
