@@ -36,19 +36,13 @@ class PackagesController < ApplicationController
   def update
     the_id = params.fetch("path_id")
     the_package = Package.where({ :id => the_id }).at(0)
-
-    the_package.description = params.fetch("query_description")
-    the_package.delivery_date = params.fetch("query_delivery_date")
-    the_package.details = params.fetch("query_details")
-    the_package.delivery_status = params.fetch("query_delivery_status", false)
-    the_package.created_on = params.fetch("query_created_on")
-    the_package.updated_on = params.fetch("query_updated_on")
+    the_package.delivery_status = true
 
     if the_package.valid?
       the_package.save
-      redirect_to("/packages/#{the_package.id}", { :notice => "Package updated successfully."} )
+      redirect_to("packages/index", { :notice => "Marked as received."} )
     else
-      redirect_to("/packages/#{the_package.id}", { :alert => the_package.errors.full_messages.to_sentence })
+      redirect_to("packages/index", { :alert => the_package.errors.full_messages.to_sentence })
     end
   end
 
@@ -58,6 +52,6 @@ class PackagesController < ApplicationController
 
     the_package.destroy
 
-    redirect_to("/packages", { :notice => "Package deleted successfully."} )
+    redirect_to("/packages/index", { :notice => "Deleted."} )
   end
 end
